@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Blueprint Dhaka</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --cream: #fcf9f2;
+            --grid-line: rgba(140, 120, 100, 0.25);
+            --blue: #1a56f0;
+            --red: #c0392b;
+            --terracotta: #a53729;
+            --charcoal: #2d2a26;
+            --yellow: #eab308;
+            --dark: #2d2a26;
+            --muted: #6b7280;
+            --white-80: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            background: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 38px 38px;
+        }
+
+        /* BANNER */
+        .top-banner {
+            background: #0d1b3e;
+            /* Dark Blue */
+            color: #fff;
+            padding: 8px 0;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 700;
+            z-index: 1000;
+            position: sticky;
+            top: 0;
+        }
+
+        /* NAV */
+        nav {
+            position: sticky;
+            top: 31px;
+            /* Below Banner */
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: 72px;
+            background: rgba(252, 249, 242, 0.85);
+            /* Cream blur */
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(26, 86, 240, 0.1);
+            /* Faint Royal Blue */
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: var(--charcoal);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #a53729;
+            /* Terracotta Red */
+            border-radius: 4px;
+            /* Square */
+            display: grid;
+            place-items: center;
+            transition: transform 0.2s;
+        }
+
+        .logo-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: #fff;
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--charcoal);
+            line-height: 1.1;
+        }
+
+        .logo-text span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--charcoal);
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: 8px 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--terracotta);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover::after {
+            opacity: 1;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-reserve-pill {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--charcoal);
+            text-decoration: none;
+            border: 1.5px solid var(--terracotta);
+            padding: 10px 24px;
+            border-radius: 999px;
+            transition: all 0.2s;
+        }
+
+        .btn-reserve-pill:hover {
+            background: var(--terracotta);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* --- Registration Portal Styles --- */
+        .register-section {
+            padding: 80px 40px 120px;
+            background: transparent;
+            position: relative;
+            z-index: 10;
+        }
+
+        .reg-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .reg-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .reg-header h2 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            color: var(--charcoal);
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .reg-header .subtext {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            opacity: 0.8;
+        }
+
+        .hand-circle {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-30%, -50%);
+            width: 140%;
+            height: 160%;
+            z-index: -1;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .step-card {
+            background: var(--blue);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            box-shadow: 0 12px 30px rgba(26, 86, 240, 0.2);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .step-content h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .btn-pill-white {
+            background: white;
+            color: var(--blue);
+            font-weight: 800;
+            padding: 12px 28px;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-pill-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .copy-link-bar {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .btn-copy {
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .section-label {
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label span {
+            color: var(--blue);
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1.5px solid var(--terracotta);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 48px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(165, 55, 41, 0.05);
+        }
+
+        .teammate-card {
+            background: white;
+            border: 1.5px solid #eee;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .teammate-card:hover {
+            border-color: var(--blue);
+        }
+
+        .teammate-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .teammate-header h5 {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+        }
+
+        .badge-lead {
+            background: var(--terracotta);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 900;
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        .btn-remove {
+            color: var(--red);
+            background: none;
+            border: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--charcoal);
+            text-transform: uppercase;
+        }
+
+        .form-input,
+        .form-select {
+            padding: 12px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(26, 86, 240, 0.1);
+        }
+
+        .verify-box {
+            background: #f0f7ff;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #d0e4ff;
+            margin-top: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #3b60ba;
+            text-transform: none;
+            cursor: pointer;
+        }
+
+        .travel-toggle {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            margin-bottom: 48px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .travel-toggle:hover {
+            border-color: var(--terracotta);
+        }
+
+        .stipend-warning {
+            background: #fff5f4;
+            border: 1px solid var(--terracotta);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            color: var(--terracotta);
+        }
+
+        .stipend-warning p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .upload-box {
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-box:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: rgba(26, 86, 240, 0.02);
+        }
+
+        .add-teammate-btn {
+            width: 100%;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            color: var(--muted);
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            margin-top: 20px;
+        }
+
+        .add-teammate-btn:hover {
+            border-color: var(--terracotta);
+            color: var(--terracotta);
+            background: #fffafa;
+        }
+
+        .btn-submit-massive {
+            width: 100%;
+            padding: 24px;
+            background: var(--terracotta);
+            color: white;
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(165, 55, 41, 0.3);
+            transition: all 0.2s;
+            margin-top: 40px;
+        }
+
+        .btn-submit-massive:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(165, 55, 41, 0.4);
+        }
+
+        .reg-disclaimer {
+            text-align: center;
+            margin-top: 24px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .reg-flag {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            width: 140px;
+            z-index: 20;
+            transform: rotate(5deg);
+        }
+
+        .success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+            padding: 80px 20px;
+        }
+
+        .success-overlay.active {
+            display: flex;
+        }
+
+        .check-mark {
+            width: 80px;
+            height: 80px;
+            background: var(--blue);
+            color: white;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+
+        /* --- Footer Section --- */
+        .footer {
+            border-top: 8px solid var(--terracotta);
+            padding: 100px 40px 60px;
+            position: relative;
+            overflow: hidden;
+            background: var(--cream);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-brand h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        .footer-brand .guild {
+            color: var(--charcoal);
+        }
+
+        .footer-brand .dhaka {
+            color: var(--blue);
+        }
+
+        .footer-info {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--charcoal);
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            max-width: 450px;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .powered-by-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .powered-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: var(--muted);
+            letter-spacing: 0.15em;
+        }
+
+        .footer-sponsors {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 900;
+            color: rgba(45, 42, 38, 0.4);
+            margin-bottom: 30px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--blue);
+            transform: translateX(8px);
+        }
+
+        .footer-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: right;
+        }
+
+        .footer-copyright {
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .footer-handcrafted {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 2px solid var(--charcoal);
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            color: var(--charcoal);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 4px 4px 0 var(--charcoal);
+        }
+
+        .social-link:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0 var(--blue);
+            color: var(--blue);
+            border-color: var(--blue);
+        }
+
+        /* Hack Club Flag Pin */
+        .footer-flag-right {
+            position: absolute;
+            top: -20px;
+            right: 40px;
+            width: 100px;
+            z-index: 20;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .footer-flag-right img {
+            width: 100%;
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 60px;
+            }
+
+            .footer-right {
+                text-align: center;
+                align-items: center;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-flag-right {
+                position: relative;
+                top: auto;
+                right: auto;
+                left: auto;
+                transform: none;
+                margin-bottom: 32px;
+                width: 90px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* --- TOAST NOTIFICATIONS --- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--terracotta);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* --- PROGRESS BAR --- */
+        .progress-wrapper {
+            width: 100%;
+            height: 6px;
+            background: rgba(26, 86, 240, 0.1);
+            border-radius: 999px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--blue);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-banner">BLUEPRINT × HACK CLUB 2026</div>
+
+    <nav>
+        <a class="nav-logo" href="index.html">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+                </svg>
+            </div>
+            <div class="logo-text">
+                <strong>Daedalus</strong>
+                <span>BLUEPRINT × HACK CLUB</span>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">Awards & Details</a></li>
+            <li><a href="index.html#schedule">Schedule</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><a href="about.html">About Hack Club</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="register.html" class="btn-reserve-pill">RESERVE SPOT</a>
+        </div>
+    </nav>
+
+    <!-- REGISTRATION SECTION -->
+    <section class="register-section" id="register">
+        <div class="reg-container">
+            <!-- Hack Club Flag -->
+            <div class="reg-flag">
+                <img src="https://assets.hackclub.com/flag-standalone.png" alt="Hack Club Flag" style="width:100%;">
+            </div>
+
+            <div class="reg-header">
+                <h2>
+                    SECURE YOUR
+                    <span style="position: relative; z-index: 1;">SPOT.
+                        <svg class="hand-circle" viewBox="0 0 200 80" preserveAspectRatio="none">
+                            <path d="M10,40 C10,10 190,10 190,40 C190,70 10,70 15,45" stroke="#1a56f0" stroke-width="4"
+                                fill="none" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                </h2>
+                <p class="subtext">Register your team (1-4 people). Ages 13-18 only.</p>
+            </div>
+
+            <!-- Step 1 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <h3>Step 1: Every teammate must join the guild first.</h3>
+                    <a href="https://blueprint.hackclub.com/guilds/invite/dhaka" target="_blank"
+                        class="btn-pill-white">JOIN THE GUILD →</a>
+                </div>
+                <div class="copy-link-bar">
+                    <span id="invite-url">https://blueprint.hackclub.com/guilds/invite/dhaka</span>
+                    <button class="btn-copy" onclick="copyInviteLink()">Copy Link</button>
+                </div>
+                <div class="checkbox-group"
+                    style="margin-top:20px; color:white; background:rgba(0,0,0,0.1); padding:15px; border-radius:10px;">
+                    <input type="checkbox" id="join-slack-confirm" style="width:20px; height:20px;">
+                    <label for="join-slack-confirm" style="font-weight:700; cursor:pointer;">I confirm my squad has
+                        joined the #BUILD-GUILD-DHAKA channel.</label>
+                </div>
+            </div>
+
+            <div class="section-label"><span>01</span> THE IDENTITY</div>
+            <!-- Identity Form -->
+            <div class="form-card">
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label>SQUAD NAME</label>
+                        <input type="text" id="squad-name" class="form-input" placeholder="e.g. Dhaka Hardware Squad">
+                    </div>
+                    <div class="form-group">
+                        <label>PROJECT IDEA (OPTIONAL)</label>
+                        <input type="text" id="project-idea" class="form-input"
+                            placeholder="What are you thinking of building?">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label"><span>02</span> THE SQUAD</div>
+            <!-- Squad Form Container -->
+            <div class="form-card">
+                <div id="teammates-list">
+                    <!-- Teammate cards will be inserted here -->
+                </div>
+                <button class="add-teammate-btn" id="add-teammate-btn">+ ADD TEAMMATE</button>
+            </div>
+
+            <!-- Travel Section -->
+            <div class="travel-toggle" id="travel-checkbox-container">
+                <input type="checkbox" id="travel-assist" style="width:20px; height:20px; cursor:pointer;">
+                <label for="travel-assist" style="font-weight:700; cursor:pointer; color: var(--charcoal);">
+                    Are you traveling from outside Dhaka and need a travel stipend?
+                </label>
+            </div>
+
+            <div id="travel-form" style="display:none;">
+                <div class="stipend-warning">
+                    <p><strong>READ CAREFULLY:</strong> Travel stipends are limited and granted based on distance and
+                        need. Be as accurate as possible.</p>
+                </div>
+                <div class="form-card">
+                    <div class="input-grid">
+                        <div class="form-group">
+                            <label>Origin City</label>
+                            <input type="text" id="origin-city" class="form-input" placeholder="e.g. Rajshahi">
+                        </div>
+                        <div class="form-group">
+                            <label>Travel Method</label>
+                            <select id="travel-method" class="form-select">
+                                <option>Train</option>
+                                <option>Bus</option>
+                                <option>Plane</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:20px;">
+                        <label>Requested Amount (BDT)</label>
+                        <input type="number" id="stipend-amount" class="form-input" placeholder="Amount in BDT">
+                    </div>
+                    <div class="form-group" style="margin-top:24px;">
+                        <label>Upload Proof of Cost</label>
+                        <div class="upload-box" id="upload-trigger">
+                            <input type="file" id="proof-upload" style="display:none;" accept="image/*">
+                            <div id="upload-status">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="margin-bottom:8px;">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <p id="upload-text" style="font-size:0.8rem; font-weight:700;">UPLOAD PROOF OF
+                                    COST<br><span style="font-weight:500; font-size: 0.7rem;">(Screenshot of ticket
+                                        price)</span></p>
+                                <div class="progress-wrapper" id="progress-wrapper">
+                                    <div class="progress-bar" id="progress-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-submit-massive" id="submit-btn" style="position: relative; z-index: 10;">SUBMIT
+                APPLICATION →</button>
+            <div class="reg-disclaimer">All data is kept secure and handled by local organizers via Supabase.</div>
+
+            <!-- Success State -->
+            <div class="success-overlay" id="success-state">
+                <div class="check-mark" style="margin: 0 auto 20px;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <h2 style="font-family: 'Fraunces', serif; color: var(--blue); font-size: 3rem;">WISH GRANTED!</h2>
+                <p style="font-weight: 700; color: var(--charcoal); font-size: 1.2rem;">Check your email for next steps.
+                </p>
+                <a href="index.html" class="btn-pill-white"
+                    style="margin-top: 40px; border: 2px solid var(--blue);">BACK TO HOME</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-brand">
+                    <h2><span class="guild">Build Guild</span> <span class="dhaka">Dhaka</span></h2>
+                    <div class="footer-info">
+                        A HACK CLUB BLUEPRINT EVENT • APRIL 2026<br>
+                        VENUE TBA, DHAKA • ORGANISED BY ADNAN OSMAN
+                    </div>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>NAVIGATE</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#parents">Parents</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <div class="footer-flag-right">
+                    <img src="https://assets.hackclub.com/flag-standalone.png" alt="Hack Club Flag">
+                </div>
+                <div class="footer-copyright">© 2026 Build Guild Dhaka</div>
+                <div class="footer-handcrafted">Handcrafted by Hack Clubbers</div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="error-toast" class="toast"></div>
+
+    <script>
+        // --- SUPABASE CONFIGURATION ---
+        const SUPABASE_URL = 'https://uzfbwdjhzpreglutabdo.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_9cpzLJVHH2EgGN8bPsvxGQ_RG3lyJy2';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const teammatesList = document.getElementById('teammates-list');
+        const addBtn = document.getElementById('add-teammate-btn');
+        const travelCheckbox = document.getElementById('travel-assist');
+        const travelForm = document.getElementById('travel-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const successState = document.getElementById('success-state');
+        const uploadTrigger = document.getElementById('upload-trigger');
+        const proofUpload = document.getElementById('proof-upload');
+        const uploadStatus = document.getElementById('upload-status');
+        const errorToast = document.getElementById('error-toast');
+        const joinSlackConfirm = document.getElementById('join-slack-confirm');
+
+        const regFormElements = [
+            document.querySelector('.reg-header'),
+            document.querySelector('.step-card'),
+            ...document.querySelectorAll('.section-label'),
+            ...document.querySelectorAll('.form-card'),
+            document.getElementById('travel-checkbox-container'),
+            document.getElementById('travel-form'),
+            document.getElementById('submit-btn'),
+            document.querySelector('.reg-disclaimer')
+        ];
+
+        let teammateCount = 0;
+        let uploadedFileUrl = null;
+
+        function showToast(message) {
+            errorToast.innerText = "The Genie encountered an error: " + message;
+            errorToast.classList.add('show');
+            setTimeout(() => errorToast.classList.remove('show'), 5000);
+        }
+
+        function createTeammateCard(id) {
+            const isLead = id === 1;
+            const card = document.createElement('div');
+            card.className = 'teammate-card';
+            card.id = `teammate-${id}`;
+            card.innerHTML = `
+                <div class="teammate-header">
+                    <h5>TEAMMATE 0${id} ${isLead ? '<span class="badge-lead">LEAD</span>' : ''}</h5>
+                    ${!isLead ? `<button type="button" class="btn-remove" onclick="removeTeammate(${id})">REMOVE</button>` : ''}
+                </div>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" class="form-input" placeholder="e.g. Adnan Sami" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Institution</label>
+                        <input type="text" name="institution" class="form-input" placeholder="University/School" required>
+                    </div>
+                </div>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label>Age (13-18)</label>
+                        <input type="number" name="age" class="form-input" min="13" max="18" placeholder="16" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" class="form-input" placeholder="name@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Experience Level</label>
+                    <select name="experience" class="form-select">
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Pro</option>
+                    </select>
+                </div>
+                <div class="verify-box">
+                    <div class="form-group">
+                        <label>Guild Username</label>
+                        <input type="text" name="guild_username" class="form-input" placeholder="@username" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="verify-${id}" class="teammate-verify" required>
+                        <label for="verify-${id}">I confirm this teammate has successfully joined the guild.</label>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function addTeammate() {
+            if (teammateCount < 4) {
+                teammateCount++;
+                teammatesList.appendChild(createTeammateCard(teammateCount));
+                if (teammateCount === 4) addBtn.style.display = 'none';
+            }
+        }
+
+        window.removeTeammate = function (id) {
+            const card = document.getElementById(`teammate-${id}`);
+            if (card) {
+                card.remove();
+                teammateCount--;
+                addBtn.style.display = 'block';
+                const cards = teammatesList.querySelectorAll('.teammate-card');
+                teammateCount = 0;
+                cards.forEach((c, index) => {
+                    teammateCount = index + 1;
+                    const h5 = c.querySelector('h5');
+                    const isLead = teammateCount === 1;
+                    h5.innerHTML = `TEAMMATE 0${teammateCount} ${isLead ? '<span class="badge-lead">LEAD</span>' : ''}`;
+                    c.id = `teammate-${teammateCount}`;
+                    const removeBtn = c.querySelector('.btn-remove');
+                    if (removeBtn) {
+                        removeBtn.setAttribute('onclick', `removeTeammate(${teammateCount})`);
+                    }
+                });
+            }
+        };
+
+        addTeammate();
+        if (addBtn) addBtn.addEventListener('click', addTeammate);
+        if (travelCheckbox) travelCheckbox.addEventListener('change', () => {
+            travelForm.style.display = travelCheckbox.checked ? 'block' : 'none';
+        });
+
+        // --- FILE UPLOAD LOGIC ---
+        if (uploadTrigger) uploadTrigger.addEventListener('click', () => proofUpload.click());
+
+        if (proofUpload) proofUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const uploadText = document.getElementById('upload-text');
+            const progressWrapper = document.getElementById('progress-wrapper');
+            const progressBar = document.getElementById('progress-bar');
+
+            // UI Update
+            uploadText.innerHTML = '<span style="color:var(--blue);">The Genie is securing your scroll...</span>';
+            progressWrapper.style.display = 'block';
+            progressBar.style.width = '30%'; // Initial simulated progress
+
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+            const filePath = `proofs/${fileName}`;
+
+            // Explicit Bucket Check & Upload
+            const bucketName = 'travel-proofs'; // Hard Sync: No spaces or capitals
+
+            let { error: uploadError } = await sb.storage
+                .from(bucketName)
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: true,
+                    contentType: file.type
+                });
+
+            if (uploadError) {
+                console.error("Storage Error:", uploadError);
+                showToast("Upload failed: " + uploadError.message);
+                uploadText.innerHTML = '<span style="color:var(--terracotta);">UPLOAD FAILED. TRY AGAIN.</span>';
+                progressWrapper.style.display = 'none';
+                return;
+            }
+
+            progressBar.style.width = '100%';
+
+            // Grabbing the public URL
+            const { data: urlData } = sb.storage.from(bucketName).getPublicUrl(filePath);
+            uploadedFileUrl = urlData.publicUrl;
+
+            uploadText.innerHTML = '<span style="color:#22c55e;">WISH SECURED (UPLOADED) ✅</span>';
+        });
+
+        // --- DIAGNOSTIC TOOL (Run this in console if errors persist) ---
+        window.debugGenie = async function () {
+            console.log("🧞 Genie Diagnostic Starting...");
+            let { data, error } = await sb.storage.listBuckets();
+            if (error) {
+                console.error("Diagnostic Error:", error);
+                alert("Diagnostic Error: " + error.message);
+            } else {
+                console.table(data);
+                const bucketNames = data.map(b => b.name);
+                alert("Available Buckets: " + bucketNames.join(", "));
+            }
+        };
+
+        window.copyInviteLink = function () {
+            const url = document.getElementById('invite-url').innerText;
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.querySelector('.btn-copy');
+                btn.innerText = 'COPIED!';
+                setTimeout(() => btn.innerText = 'Copy Link', 2000);
+            });
+        };
+
+        // --- FORM SUBMISSION ---
+        if (submitBtn) submitBtn.addEventListener('click', async () => {
+            // 1. Validation
+            const leadEmail = document.querySelector('#teammate-1 input[name="email"]').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(leadEmail)) {
+                showToast("Lead teammate must have a valid email.");
+                return;
+            }
+
+            if (!joinSlackConfirm.checked) {
+                showToast("Please confirm your squad has joined the #BUILD-GUILD-DHAKA channel.");
+                return;
+            }
+
+            const verifies = document.querySelectorAll('.teammate-verify');
+            let allVerified = true;
+            verifies.forEach(v => { if (!v.checked) allVerified = false; });
+            if (!allVerified) {
+                showToast("All teammates must be confirmed to have joined the guild.");
+                return;
+            }
+
+            // 2. Data Collection
+            submitBtn.innerText = "CASTING SPELL...";
+            submitBtn.disabled = true;
+
+            const squadData = {
+                squad_name: document.getElementById('squad-name').value,
+                project_idea: document.getElementById('project-idea').value,
+                is_travel_stipend_requested: travelCheckbox.checked,
+                travel_details: travelCheckbox.checked ? {
+                    city: document.getElementById('origin-city').value,
+                    method: document.getElementById('travel-method').value,
+                    amount: document.getElementById('stipend-amount').value
+                } : null,
+                proof_of_cost_url: uploadedFileUrl,
+                teammates: []
+            };
+
+            const cards = document.querySelectorAll('.teammate-card');
+            cards.forEach(card => {
+                squadData.teammates.push({
+                    name: card.querySelector('input[name="name"]').value,
+                    institution: card.querySelector('input[name="institution"]').value,
+                    age: card.querySelector('input[name="age"]').value,
+                    email: card.querySelector('input[name="email"]').value,
+                    experience: card.querySelector('select[name="experience"]').value,
+                    guild_username: card.querySelector('input[name="guild_username"]').value
+                });
+            });
+
+            // 3. Supabase INSERT
+            const { error } = await sb
+                .from('registrations')
+                .insert([squadData]);
+
+            if (error) {
+                showToast(error.message);
+                submitBtn.innerText = "SUBMIT APPLICATION →";
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // 4. Success UI
+            regFormElements.forEach(el => { if (el) el.style.display = 'none'; });
+            successState.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>

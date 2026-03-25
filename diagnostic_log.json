@@ -1,0 +1,22 @@
+[
+  {
+    "bucket": "Travel-Proofs",
+    "statusCode": 400,
+    "data": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\"}"
+  },
+  {
+    "bucket": "travelproofs",
+    "statusCode": 400,
+    "data": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\"}"
+  },
+  {
+    "bucket": "travel_proofs",
+    "statusCode": 400,
+    "data": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\"}"
+  },
+  {
+    "bucket": "travel-proofs",
+    "statusCode": 400,
+    "data": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\"}"
+  }
+]
