@@ -277,6 +277,40 @@
             color: var(--muted);
         }
 
+        .sponsored-by-wrap {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 36px;
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 999px;
+            width: fit-content;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeUp 1s ease both;
+            animation-delay: 0.5s;
+        }
+
+        .sponsored-by-text {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--charcoal);
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .sponsored-logo-img {
+            height: 32px;
+            width: auto;
+            opacity: 1;
+            filter: grayscale(1) brightness(0) contrast(1.5);
+            transition: all 0.3s ease;
+        }
+
         .powered-by::before {
             content: '';
             display: block;
@@ -2135,6 +2169,16 @@
                 height: 55px !important;
             }
 
+            .sponsored-by-wrap {
+                margin-top: 24px;
+                padding: 8px 20px;
+                gap: 12px;
+            }
+
+            .sponsored-logo-img {
+                height: 26px;
+            }
+
             /* SUMMARY TICKETS */
             .summary-tickets {
                 padding: 28px 16px;
@@ -2356,6 +2400,16 @@
                 height: 44px !important;
             }
 
+            .sponsored-by-wrap {
+                margin-top: 20px;
+                padding: 6px 16px;
+                gap: 10px;
+            }
+
+            .sponsored-logo-img {
+                height: 22px;
+            }
+
             .hero-illustration {
                 margin-top: -40px;
             }
@@ -2459,6 +2513,12 @@
                         target="_blank">
                         <img src="homepage_logo-3585630b.webp" alt="Blueprint" class="hero-logo-img"
                             style="height: 90px !important; filter: grayscale(1) brightness(0.1) contrast(2); opacity: 1;">
+                    </a>
+                </div>
+                <div class="sponsored-by-wrap">
+                    <span class="sponsored-by-text">Sponsored by</span>
+                    <a href="https://easyeda.com/" target="_blank">
+                        <img src="https://easyeda.com/images/logo.png" alt="EasyEDA" class="sponsored-logo-img">
                     </a>
                 </div>
             </div>
