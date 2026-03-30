@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Registration | Blueprint Dhaka</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --cream: #fcf9f2;
+            --grid-line: rgba(140, 120, 100, 0.25);
+            --blue: #1a56f0;
+            --red: #c0392b;
+            --terracotta: #a53729;
+            --charcoal: #2d2a26;
+            --yellow: #eab308;
+            --dark: #2d2a26;
+            --muted: #6b7280;
+            --white-80: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            background: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 38px 38px;
+        }
+
+        /* BANNER */
+        .top-banner {
+            background: #0d1b3e;
+            color: #fff;
+            padding: 8px 0;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 700;
+            z-index: 1000;
+            position: sticky;
+            top: 0;
+        }
+
+        /* NAV */
+        nav {
+            position: sticky;
+            top: 31px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: 72px;
+            background: rgba(252, 249, 242, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(26, 86, 240, 0.1);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: var(--charcoal);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #a53729;
+            border-radius: 4px;
+            display: grid;
+            place-items: center;
+        }
+
+        .logo-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: #fff;
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--charcoal);
+            line-height: 1.1;
+        }
+
+        .logo-text span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .btn-reserve-pill {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--charcoal);
+            text-decoration: none;
+            border: 1.5px solid var(--terracotta);
+            padding: 10px 24px;
+            border-radius: 999px;
+            transition: all 0.2s;
+        }
+
+        .btn-reserve-pill:hover {
+            background: var(--terracotta);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* FORM STYLES */
+        .workshop-container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .reg-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .reg-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--charcoal);
+            margin-bottom: 12px;
+        }
+
+        .notice-box {
+            background: #fffbeb;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+            padding: 20px 24px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
+        }
+
+        .form-card {
+            background: white;
+            padding: 48px;
+            border-radius: 24px;
+            border: 2px solid var(--blue);
+            box-shadow: 12px 12px 0 var(--dark);
+        }
+
+        .form-section-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            color: var(--dark);
+            border-bottom: 2px dashed rgba(0,0,0,0.1);
+            padding-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #ddd;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(26, 86, 240, 0.1);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+        }
+
+        .guild-integration {
+            background: #f0f7ff;
+            padding: 32px;
+            border-radius: 16px;
+            margin: 40px 0;
+            border: 1px solid #d0e4ff;
+        }
+
+        .guild-title {
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--blue);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .copy-link-bar {
+            display: flex;
+            gap: 12px;
+            background: white;
+            padding: 4px 4px 4px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #d0e4ff;
+            align-items: center;
+        }
+
+        .link-text {
+            flex: 1;
+            font-family: monospace;
+            font-size: 14px;
+            color: var(--charcoal);
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .btn-copy {
+            background: var(--blue);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-copy:hover {
+            background: #0d41bf;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .checkbox-group span {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #444;
+            font-weight: 500;
+        }
+
+        .btn-submit-massive {
+            width: 100%;
+            background: var(--red);
+            color: white;
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            padding: 20px;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #8e2a1f;
+            transition: all 0.1s;
+            margin-top: 32px;
+            text-transform: uppercase;
+        }
+
+        .btn-submit-massive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 0 #8e2a1f;
+        }
+
+        .btn-submit-massive:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 24px; }
+            .form-card { padding: 32px 24px; }
+            .input-grid { grid-template-columns: 1fr; }
+            .btn-submit-massive { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-bg"></div>
+    <div class="top-banner">BLUEPRINT × HACK CLUB 2026</div>
+
+    <nav>
+        <a class="nav-logo" href="index.html">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+                </svg>
+            </div>
+            <div class="logo-text">
+                <strong>Daedalus</strong>
+                <span>BLUEPRINT × HACK CLUB</span>
+            </div>
+        </a>
+        <div class="nav-actions">
+            <a href="index.html" class="btn-reserve-pill">BACK TO HOME</a>
+        </div>
+    </nav>
+
+    <div class="workshop-container">
+        <div class="reg-header">
+            <h1>Masterclass Registration</h1>
+        </div>
+
+        <div class="notice-box">
+            <span>⚠️</span>
+            <p><strong>Notice:</strong> If you have already registered for the Daedalus Hackathon, you are automatically enrolled in the workshop. You do not need to fill this out.</p>
+        </div>
+
+        <form class="form-card" id="workshopForm">
+            <h2 class="form-section-title">Your Details</h2>
+            
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" class="form-input" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+            </div>
+
+            <div class="input-grid">
+                <div class="form-group">
+                    <label for="age">Age (13–18)</label>
+                    <input type="number" id="age" class="form-input" min="13" max="18" value="15" required>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience Level</label>
+                    <select id="experience" class="form-select" required>
+                        <option value="" disabled selected>Select level</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="guild-integration">
+                <span class="guild-title">Join the Community</span>
+                <p style="font-size: 14px; color: #555; margin-bottom: 12px;">The workshop coordinates through our official Discord Guild. Join before submitting!</p>
+                <div class="copy-link-bar">
+                    <input type="text" class="link-text" value="https://blueprint.hackclub.com/guilds/invite/dhaka" readonly>
+                    <a href="https://blueprint.hackclub.com/guilds/invite/dhaka" target="_blank" class="btn-copy">JOIN →</a>
+                </div>
+
+                <label class="checkbox-group">
+                    <input type="checkbox" required>
+                    <span>I have joined the official Daedalus-Dhaka Guild and understand that workshop seats are limited.</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-submit-massive">Join the Workshop</button>
+        </form>
+    </div>
+
+    <div id="error-toast" style="position: fixed; bottom: 30px; right: 30px; background: var(--terracotta); color: white; padding: 16px 24px; border-radius: 12px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 10000; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; pointer-events: none;"></div>
+
+    <div id="success-state" style="display:none; flex-direction: column; align-items: center; text-align: center; gap: 20px; padding: 120px 20px;">
+        <div style="width: 80px; height: 80px; background: var(--blue); color: white; border-radius: 50%; display: grid; place-items: center; font-size: 40px;">✅</div>
+        <h2 style="font-family: 'Fraunces', serif; font-size: clamp(2rem, 5vw, 3.5rem); color: var(--charcoal); font-weight: 900;">WELCOME TO THE GUILD!</h2>
+        <p style="font-size: 1.1rem; color: var(--muted); max-width: 550px; line-height: 1.6;">Your registration is confirmed. Check your email for workshop coordinates and Discord setup. We can't wait to see you in the Masterclass!</p>
+        <a href="index.html" class="btn-reserve-pill" style="margin-top: 20px;">BACK TO HOME</a>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://uzfbwdjhzpreglutabdo.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_9cpzLJVHH2EgGN8bPsvxGQ_RG3lyJy2';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const workshopForm = document.getElementById('workshopForm');
+        const submitBtn = workshopForm.querySelector('.btn-submit-massive');
+        const errorToast = document.getElementById('error-toast');
+        const successState = document.getElementById('success-state');
+        const workshopContainer = document.querySelector('.workshop-container');
+
+        function showToast(message) {
+            errorToast.innerText = message;
+            errorToast.style.transform = 'translateY(0)';
+            errorToast.style.opacity = '1';
+            setTimeout(() => {
+                errorToast.style.transform = 'translateY(100px)';
+                errorToast.style.opacity = '0';
+            }, 5000);
+        }
+
+        workshopForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // 1. Capture Data
+            const formData = {
+                full_name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                age: parseInt(document.getElementById('age').value),
+                experience_level: document.getElementById('experience').value
+            };
+
+            // 2. UI Loading State
+            submitBtn.innerText = "SUBMITTING...";
+            submitBtn.disabled = true;
+
+            try {
+                // 3. Check for existing email (Double Registration Protection)
+                const { data: existing, error: checkError } = await sb
+                    .from('workshop_registrations')
+                    .select('email')
+                    .eq('email', formData.email)
+                    .single();
+
+                if (existing) {
+                    showToast("You are already registered for the workshop!");
+                    submitBtn.innerText = "JOIN THE WORKSHOP";
+                    submitBtn.disabled = false;
+                    return;
+                }
+
+                // 4. Supabase Insert
+                const { error: insertError } = await sb
+                    .from('workshop_registrations')
+                    .insert([formData]);
+
+                if (insertError) throw insertError;
+
+                // 5. Success UX
+                workshopContainer.style.display = 'none';
+                successState.style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || "An unexpected error occurred. Please try again.");
+                submitBtn.innerText = "JOIN THE WORKSHOP";
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

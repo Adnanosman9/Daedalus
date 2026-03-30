@@ -419,6 +419,29 @@
             transform: translateY(-2px);
         }
 
+        .cta-workshop-ghost {
+            font-family: 'DM Sans', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--dark);
+            font-size: 15px;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 8px;
+            border: 1.5px solid var(--dark);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .cta-workshop-ghost:hover {
+            background: var(--dark);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
         /* FULLWIDTH ILLUSTRATION — overlaps from where buttons end */
         .hero-illustration {
             position: relative;
@@ -497,6 +520,193 @@
             color: #1a1a1a;
             transform: rotate(2deg);
         }
+
+        /* --- Workshop Only Section (High Visibility) --- */
+        .workshop-section {
+            background-color: #111111;
+            background-image: 
+                linear-gradient(rgba(26, 86, 240, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26, 86, 240, 0.07) 1px, transparent 1px);
+            background-size: 25px 25px;
+            border: 3px solid #ff1a1a; /* AMD Style Red Glow */
+            box-shadow: 0 0 15px rgba(255, 26, 26, 0.25);
+            border-radius: 28px;
+            padding: 70px;
+            margin: 80px auto;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            position: relative;
+            z-index: 15;
+            overflow: hidden;
+            animation: redPulse 4s infinite alternate ease-in-out;
+            border-style: solid;
+        }
+
+        @keyframes redPulse {
+            0% { 
+                box-shadow: 0 0 15px rgba(255, 26, 26, 0.2);
+                border-color: #ff3333;
+            }
+            100% { 
+                box-shadow: 0 0 35px rgba(255, 26, 26, 0.5);
+                border-color: #ff0000;
+            }
+        }
+
+        .workshop-content {
+            flex: 1.2;
+            color: #ffffff;
+        }
+
+        .workshop-badge {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 8px 18px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .workshop-headline {
+            font-family: 'Fraunces', serif;
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .workshop-subheadline {
+            font-size: 19px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+            max-width: 650px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .workshop-benefits {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .benefit-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        }
+
+        .benefit-text strong {
+            display: block;
+            font-size: 17px;
+            margin-bottom: 4px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .benefit-text span {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .workshop-cta {
+            flex: 0 0 auto;
+            text-align: right;
+        }
+
+        .btn-workshop-massive {
+            display: inline-block;
+            background: #ffffff;
+            color: #000000;
+            font-weight: 950;
+            font-size: 22px;
+            padding: 24px 50px;
+            border-radius: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border: none;
+        }
+
+        .btn-workshop-massive:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: #f8f8f8;
+            box-shadow: 0 25px 60px rgba(255, 26, 26, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .workshop-section {
+                padding: 60px 40px;
+                margin: 60px 30px;
+                gap: 50px;
+            }
+            .workshop-headline { font-size: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .workshop-section {
+                flex-direction: column;
+                text-align: center;
+                margin: 60px 20px;
+                padding: 70px 30px 50px;
+                border-radius: 20px;
+            }
+            
+            .workshop-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .workshop-benefits {
+                text-align: left;
+                width: 100%;
+                margin-top: 20px;
+            }
+
+            .workshop-badge {
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 10px;
+                padding: 6px 14px;
+            }
+
+            .workshop-cta {
+                width: 100%;
+            }
+
+            .btn-workshop-massive {
+                width: 100%;
+                font-size: 18px;
+                padding: 20px;
+            }
+        }
+
 
         /* INTRO SECTION */
         .intro-section {
@@ -2516,7 +2726,7 @@
                     </a>
                 </div>
                 <div class="sponsored-by-wrap">
-                    <span class="sponsored-by-text">Coupon sponsor by</span>
+                    <span class="sponsored-by-text">Coupon sponsored by</span>
                     <a href="https://easyeda.com/" target="_blank">
                         <img src="https://easyeda.com/images/logo.png" alt="EasyEDA" class="sponsored-logo-img">
                     </a>
@@ -2536,6 +2746,7 @@
 
             <div class="hero-ctas">
                 <a href="register.html" class="cta-reserve">Reserve Your Spot →</a>
+                <a href="workshop.html" class="cta-workshop-ghost">Sign up for Workshop Only</a>
                 <a href="https://blueprint.hackclub.com/guilds/invite/dhaka" class="cta-guild" target="_blank">Join the
                     Guild</a>
             </div>
@@ -2562,6 +2773,48 @@
             <span class="ticket-label">Total Cost</span>
         </div>
     </div>
+
+    <!-- WORKSHOP ONLY SECTION -->
+    <section id="workshop" class="workshop-section">
+        <div class="workshop-badge">No Coding/Engineering Experience Required</div>
+        
+        <div class="workshop-content">
+            <h2 class="workshop-headline">Not ready for the Hackathon? Join the Masterclass.</h2>
+            <p class="workshop-subheadline">
+                Don't want to compete in the 24-hour sprint but still want to master Hardware Architecture and take home the gear?
+            </p>
+            
+            <ul class="workshop-benefits">
+                <li class="benefit-item">
+                    <span class="benefit-icon">🎓</span>
+                    <div class="benefit-text">
+                        <strong>Full Workshop Access</strong>
+                        <span>Learn EasyEDA Pro & Fusion 360 from the Robo Tech Valley founders.</span>
+                    </div>
+                </li>
+                <li class="benefit-item">
+                    <span class="benefit-icon">🎁</span>
+                    <div class="benefit-text">
+                        <strong>Hacker Swag Bag</strong>
+                        <span>Includes the official Daedalus T-shirt, stickers, and hardware rulers.</span>
+                    </div>
+                </li>
+                <li class="benefit-item">
+                    <span class="benefit-icon">🎟️</span>
+                    <div class="benefit-text">
+                        <strong>Limited Entry</strong>
+                        <span>Only 30 'Workshop-Only' seats available for non-competitors.</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="workshop-cta">
+            <a href="workshop.html" class="btn-workshop-massive">
+                Sign Up for Workshop Only
+            </a>
+        </div>
+    </section>
 
     <!-- WHAT IS THIS SECTION -->
     <section class="intro-section" id="about">
