@@ -277,11 +277,20 @@
             color: var(--muted);
         }
 
+        .sponsor-pills-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 12px;
+            margin-top: 36px;
+            animation: fadeUp 1s ease both;
+            animation-delay: 0.5s;
+        }
+
         .sponsored-by-wrap {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-top: 36px;
             padding: 10px 24px;
             background: rgba(255, 255, 255, 0.5);
             border: 1px solid rgba(0, 0, 0, 0.08);
@@ -290,8 +299,6 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: fadeUp 1s ease both;
-            animation-delay: 0.5s;
         }
 
         .sponsored-by-text {
@@ -524,11 +531,12 @@
         /* --- Workshop Only Section (High Visibility) --- */
         .workshop-section {
             background-color: #111111;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(26, 86, 240, 0.07) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(26, 86, 240, 0.07) 1px, transparent 1px);
             background-size: 25px 25px;
-            border: 3px solid #ff1a1a; /* AMD Style Red Glow */
+            border: 3px solid #ff1a1a;
+            /* AMD Style Red Glow */
             box-shadow: 0 0 15px rgba(255, 26, 26, 0.25);
             border-radius: 28px;
             padding: 70px;
@@ -546,11 +554,12 @@
         }
 
         @keyframes redPulse {
-            0% { 
+            0% {
                 box-shadow: 0 0 15px rgba(255, 26, 26, 0.2);
                 border-color: #ff3333;
             }
-            100% { 
+
+            100% {
                 box-shadow: 0 0 35px rgba(255, 26, 26, 0.5);
                 border-color: #ff0000;
             }
@@ -575,7 +584,7 @@
             border-radius: 999px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .workshop-headline {
@@ -648,7 +657,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             border: none;
         }
 
@@ -664,7 +673,10 @@
                 margin: 60px 30px;
                 gap: 50px;
             }
-            .workshop-headline { font-size: 40px; }
+
+            .workshop-headline {
+                font-size: 40px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -675,7 +687,7 @@
                 padding: 70px 30px 50px;
                 border-radius: 20px;
             }
-            
+
             .workshop-content {
                 display: flex;
                 flex-direction: column;
@@ -2610,8 +2622,11 @@
                 height: 44px !important;
             }
 
+            .sponsor-pills-row {
+                flex-wrap: wrap;
+            }
+
             .sponsored-by-wrap {
-                margin-top: 20px;
                 padding: 6px 16px;
                 gap: 10px;
             }
@@ -2725,11 +2740,24 @@
                             style="height: 90px !important; filter: grayscale(1) brightness(0.1) contrast(2); opacity: 1;">
                     </a>
                 </div>
-                <div class="sponsored-by-wrap">
-                    <span class="sponsored-by-text">Coupon sponsored by</span>
-                    <a href="https://easyeda.com/" target="_blank">
-                        <img src="https://easyeda.com/images/logo.png" alt="EasyEDA" class="sponsored-logo-img">
-                    </a>
+                <div class="sponsor-pills-row">
+                    <!-- EasyEDA Coupon Pill -->
+                    <div class="sponsored-by-wrap">
+                        <span class="sponsored-by-text">Coupon sponsored by</span>
+                        <a href="https://easyeda.com/" target="_blank">
+                            <img src="https://easyeda.com/images/logo.png" alt="EasyEDA" class="sponsored-logo-img">
+                        </a>
+                    </div>
+                    <!-- PCBWay Manufacturing Partner Pill -->
+                    <div class="sponsored-by-wrap">
+                        <span class="sponsored-by-text">Manufacturing partner</span>
+                        <a href="https://www.pcbway.com" target="_blank">
+                            <img src="PCBWay logo（2）.png" alt="PCBWay" class="sponsored-logo-img"
+                                style="height: 28px; filter: grayscale(1) brightness(0.15) contrast(1.8); transition: filter 0.3s ease;"
+                                onmouseover="this.style.filter='grayscale(0) brightness(1) contrast(1)'"
+                                onmouseout="this.style.filter='grayscale(1) brightness(0.15) contrast(1.8)'">
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -2777,13 +2805,14 @@
     <!-- WORKSHOP ONLY SECTION -->
     <section id="workshop" class="workshop-section">
         <div class="workshop-badge">No Coding/Engineering Experience Required</div>
-        
+
         <div class="workshop-content">
             <h2 class="workshop-headline">Not ready for the Hackathon? Join the Masterclass.</h2>
             <p class="workshop-subheadline">
-                Don't want to compete in the 24-hour sprint but still want to master Hardware Architecture and take home the gear?
+                Don't want to compete in the 24-hour sprint but still want to master Hardware Architecture and take home
+                the gear?
             </p>
-            
+
             <ul class="workshop-benefits">
                 <li class="benefit-item">
                     <span class="benefit-icon">🎓</span>
@@ -2808,7 +2837,7 @@
                 </li>
             </ul>
         </div>
-        
+
         <div class="workshop-cta">
             <a href="workshop.html" class="btn-workshop-massive">
                 Sign Up for Workshop Only
